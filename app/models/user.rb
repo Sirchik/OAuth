@@ -9,6 +9,7 @@ class User < ApplicationRecord
 
 
   def self.from_omniauth(auth)
+    # byebug
     @provider = OmniauthProvider.from_omniauth(auth)
     if @provider == nil || @provider.user == nil
       @provider.destroy unless @provider == nil

@@ -4,15 +4,15 @@ class User::OmniauthCallbacksController < Devise::OmniauthCallbacksController
     define_method p do
       # byebug
       @user = User.from_omniauth(request.env['omniauth.auth'])
-      if @user = :no_email
-        session["devise.#{p.to_s.downcase}_data"] = request.env['omniauth.auth']
-        redirect_to new_user_registration_url
+      if @user == :no_email
+        # session["devise.#{p.to_s.downcase}_data"] = request.env['omniauth.auth']
+        redirect_to new_user_registration_url, :notice => "Can't get your email!"
       else
         if @user.persisted?
           sign_in_and_redirect @user#, :event => :authentification
           set_flash_message(:notice, :success, :kind => OmniAuth::Utils.camelize(p)) if is_navigational_format?
         else
-          session["devise.#{p.to_s.downcase}_data"] = request.env['omniauth.auth']
+          # session["devise.#{p.to_s.downcase}_data"] = request.env['omniauth.auth']
           redirect_to new_user_registration_url
         end
       end
